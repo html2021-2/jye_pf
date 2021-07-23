@@ -1,27 +1,162 @@
 @charset "utf-8";
 @import "_mixin";
-
-body{font-family: "Noto Sans KR"; font-size: 16px; font-weight: 400; color: #eee; background: #222;overflow-x: hidden;}
-body.overflowy{overflow-y: hidden;}
+/* fonts */
+@font-face {
+  font-family: NotoSansKR;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/NotoSansKR-Regular.eot");
+  src: local("Noto Sans KR"),
+      url("../fonts/NotoSansKR-Regular.eot") format("embedded-opentype"),
+      url("../fonts/NotoSansKR-Regular.woff2") format("woff2"),
+      url("../fonts/NotoSansKR-Regular.woff") format("woff"),
+      url("../fonts/NotoSansKR-Regular.otf") format("opentype"),
+      url("../fonts/NotoSansKR-Regular.svg#NotoSansKR") format('svg');
+}
+@font-face {
+  font-family: NotoSansKR;
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/NotoSansKR-Bold.eot");
+  src: local("Noto Sans KR"),
+      url("../fonts/NotoSansKR-Bold.eot") format("embedded-opentype"),
+      url("../fonts/NotoSansKR-Bold.woff2") format("woff2"),
+      url("../fonts/NotoSansKR-Bold.woff") format("woff"),
+      url("../fonts/NotoSansKR-Bold.otf") format("opentype"),
+      url("../fonts/NotoSansKR-Bold.svg#NotoSansKR") format('svg');
+}
+@font-face {
+  font-family: NotoSansKR;
+  font-style: normal;
+  font-weight: 900;
+  src: url("../fonts/NotoSansKR-Black.eot");
+  src: local("Noto Sans KR"),
+      url("../fonts/NotoSansKR-Black.eot") format("embedded-opentype"),
+      url("../fonts/NotoSansKR-Black.woff2") format("woff2"),
+      url("../fonts/NotoSansKR-Black.woff") format("woff"),
+      url("../fonts/NotoSansKR-Black.otf") format("opentype"),
+      url("../fonts/NotoSansKR-Black.svg#NotoSansKR") format('svg');
+}
 
 /* tag reset */
-body, p{padding: 0; margin: 0;}
-h1, h2, h3, h4, h5, h6{font-size: 100%;}
+body, h1, h2, h3, ul, p, button{padding: 0; margin: 0;}
+h1, h2, h3{font-size: 100%;}
 button{border: none; background: none; color: inherit; font-size: inherit; font-family: inherit; cursor: pointer;}
+img{vertical-align: top;}
+ul{list-style: none;}
+a:link, a:visited, a:hover, a:active{text-decoration: none; color: inherit;}
 
 /* common class */
 .p_r{position: relative;}
+.p_a{position: absolute;}
+.p_f{position: fixed;}
 .d_n{display: none !important;}
+.hidden{visibility: hidden;}
+.blind{width: 1px;height: 1px;overflow: hidden;border: none;position: absolute;clip: rect(1px, 1px, 1px, 1px);clip-path: inset(50%);}
 
-/* face */
-#face{
-  position: fixed; top: 20px; left: 50%; margin-left: -32.5px; width: 65px; height: 50px; cursor: pointer;
-  .eyeball{
-    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #222; background: #eee;; position: absolute; top: 0;
-    &.left{left: 0;}
-    &.right{right: 0;}
+body{font-family: NotoSansKR; font-size: 16px; font-weight: 400; color: #eee; background: #333; /* overflow-x: hidden; */}
+*{box-sizing: border-box;}
+body.overflowy{overflow-y: hidden;}
+body.overflowX{overflow-X: hidden;}
+
+/* ipod */
+#ipod{
+  position: fixed; top: 30px; left: 98%; z-index: 10000;
+  .btn_ipod{
+    position: relative;
+    .click{
+      @include transition(transform 0.3s);
+      position: absolute; top: 20%; left: -7%; color: #333; width: 60px; height: 60px; line-height: 60px; border-radius: 50%; background: #fff; z-index: 2; box-shadow: 1px 1px 5px #333; font-weight: 700;
+      &::before, &::after{
+        @include transition(transform 0.3s);
+        content: ""; position: absolute; top: 0; left: 0; width: 60px; height: 60px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; z-index: -1; animation: circle 5s infinite forwards; transition: transform 0.3s;}
+      &::after{animation-delay: 0.5s;}
+      &:hover, &:focus{
+        @include transform(scale(1.15));
+        &::before, &::after{@include transform(scale(1.15))};
+      }
+    }
   }
-  .pupil{width: 10px; height: 10px; position: absolute; border-radius: 50%; background: #222; top: 0; left: 0;}
+  #ipodScreen{
+    position: absolute; top: 41px; left: 42px; width: 395px; height: 295px; background: #fff; color: #222;
+    .ipod_head, .ipod_list li{width: 100%; height: 50px; line-height: 50px; }
+    .ipod_head{
+      @include flex;
+      @include justify-content(space-between);
+      @include align-items;
+      background: linear-gradient(#fff, #555); border-bottom: 1px solid #222; 
+      h2{font-size: 25px; padding-left: 20px;}
+      .head_right{
+        @include flex;
+        @include justify-content(flex-end);
+        @include align-items;
+        padding-right: 40px;
+        img{padding-right: 10px;}
+        .play{width: 30px;}
+        .battery{width: 35px;}
+      }
+    }
+    .ipod_list{
+      li{
+        position: relative; font-size: 25px; color: #000;
+        a{
+          display: block; width: 100%; height: 50px; padding-left: 20px;
+          &::before{
+            @include transform(rotate(45deg));
+            @include transition(all 0.5s);
+            content:""; display: block; width: 13px; height: 13px; border-top: 4px solid #222; border-right: 4px solid #222; position: absolute; top:50%; right: 20px; margin-top: -7.5px;
+          }
+          &:hover, &:focus{
+            background: linear-gradient(#ffffff, #eefbff); font-weight: 700;
+          }
+        }
+        &.on{
+          a{
+            background: linear-gradient(#76C5DD, #0485C2); color: #fff; font-weight: 700;
+            &::before{border-color: #fff;}
+          }
+        }
+      }
+    }
+  }
+  .btn_close{
+    position: absolute; top: 53px; right: 50px; z-index: 900;
+    img{
+    width: 23px;
+    }
+  }
+  .btn_ctrl{
+    position: absolute; top: 415px; left: 90px; width: 300px; height: 300px; z-index: 500;
+    ul{
+      width: 100%; height: 100%;
+    }
+     li{ 
+      @include transform(rotate(-45deg));
+      position: absolute;
+      &.btn_left{
+        left: -31.5px; top: 50%; margin-top: -77.5px;
+      }
+      &.btn_right{
+        right: -30px; top: 50%; margin-top: -77px;
+      }
+      &.btn_play{
+        top: -33px; left: 50%; margin-left: -75px;
+      }
+      &.btn_return{
+        bottom: -30px; left: 50%; margin-left: -74.5px;
+      }
+      img{
+        @include transition(transform 0.3s)
+      }
+    }
+    li.on, li:hover, li:focus{
+      img{
+        @include transform(scale(0.97));
+      }
+    }
+  }
+
+  #dim{position: fixed; top: 0; left: 0; display: none; width: 100%; height: 100%; background: rgba(0,0,0,.5);}
 }
 
 /* cursor */
@@ -35,7 +170,7 @@ button{border: none; background: none; color: inherit; font-size: inherit; font-
   @include justify-content;
   @include align-items;
   @include flex-direction;
-  position: fixed; top: 0; left: 0;background: #000;
+  position: fixed; top: 0; left: 0; background: #333;
   height: 100vh; width: 100%;  z-index: 100;
   .txt{
     @include flex;
@@ -43,17 +178,19 @@ button{border: none; background: none; color: inherit; font-size: inherit; font-
     @include align-items(flex-start);
     @include flex-direction;
     font-weight: 400;font-size: 50px; line-height: 60px;
-    p{display: inline-block;/* border-right: 2px solid #222; */ overflow: hidden; white-space: nowrap;/*  margin: 0 auto; */ animation: typing 13s steps(60) forwards/* , blink 0.75s step-end 4 forwards */; }
-    #txt2{animation-delay: 5s; opacity: 0;}
-    #txt3{animation-delay: 7.8s; opacity: 0;}
+    p{display: inline-block; /* border-right: 2px solid #fff; */ overflow: hidden; white-space: nowrap;/*  margin: 0 auto; */ animation: typing 7.5s steps(60) forwards , /* blink 0.75s step-end 4 forwards; */ }
+    #txt2{animation-delay: 2.8s; opacity: 0;}
+    #txt3{animation-delay: 3.8s; opacity: 0;}
+    #txt4{animation: typing 10s steps(60) forwards , /* blink 0.75s step-end 4 forwards; animation-delay: 6s; */}
     .stress{color: #ff3a17; font-size: 40px; font-weight: 700;}
   }
   p{font-size: 25px;}
+  display: none;
 }
 
 @keyframes blink {
   0%{border-color: transparent;}
-  50%{border-color: #222}
+  50%{border-color: #333}
   100%{border-color: transparent;}
 }
 @keyframes typing {
@@ -62,7 +199,7 @@ button{border: none; background: none; color: inherit; font-size: inherit; font-
   100%{width: 100%; opacity: 1;}
 //   90%{width: 0%}
 //   100%{width: 0%;}
-  }
+}
 
 #cnt1{
  height: 100vh; position: relative; overflow-x: hidden;
@@ -79,6 +216,8 @@ button{border: none; background: none; color: inherit; font-size: inherit; font-
     @include translate-50;
     position: absolute; top: 50%; left: 50%; width: 100%; font-size: 60px; line-height: 1.7;
   }
+
+
   @keyframes leftMove {
     0%{margin-left: 100%;}
     100%{margin-left: -50%;}
@@ -87,8 +226,110 @@ button{border: none; background: none; color: inherit; font-size: inherit; font-
     0%{margin-right: 100%;}
     100%{margin-right: -50%;}
   }
-}
+  @keyframes circle {
+    0%{opacity: 1; transform: scale(1);}
+    100%{opacity: 0; transform: scale(1.7);}
+  }
+/* display:  none; */}
+
 
 #cnt2{
+  background: linear-gradient(#333 10%, #888 20%, #fcf8f1 30%, #fcb95e 50%, #f57e3c 100%);
+  .sticky_wrap{
+    height: calc(6300px + 100vh + 200px);
+    position: relative;
+  }
+  .intro_sulwhasoo{
+    @include flex;
+    @include justify-content(space-around);
+    @include align-items;
+    @include transition(all 0.8s);
+    height: 100vh; //position: relative;
+    position: sticky; top: 0; overflow: hidden;
+    .txt_sulwhasoo{
+      strong{
+        color: #fcb95e;
+      }
+      h2{
+       font-size: 70px; background: linear-gradient(225deg, #fcf8f1 10%, #fcb95e 50%, #f57e3c 100%); color: transparent; -webkit-background-clip: text; background-clip: text; line-height: 1; font-weight: 900;
+      }
+      p{padding-top: 20px; color: #fff; line-height: 1.7; font-size: 18px;}
+    }
+    .computer{
+      // @include transform(scale(0.65));
+      // position: relative; width: 1000px; height: 826px;
+      position: relative; width: 1000px; height: 536px; flex: 0 0 auto;padding: 0 175px;
+      .sulwhasoo_cnt{position: absolute; top: 37px; left: 41px;}
+    }
+    &.on{
+        margin-left: -100%; opacity: 0;
+    }
+
+  }
+  .monitor{
+    position: absolute; top: 37px; left: 175px; width: 650px; height: 536px;z-index: 10;
+    > img{width: 650px;}
+  }
+  .monitor_wrap{position: absolute; top: 25px; left: 27px; width: 596px; height: 328px; overflow: hidden;}
+  .up_img{
+    @include transform(scale(0.31));
+    transform-origin: left top; max-width: none;
+    position: relative;
+  }
+}
+.brand_txt{
+  @include flex;
+  @include align-items(flex-start);
+  @include justify-content;
+  height: 100vh; color: #222; width: 100%; padding-top: 50px;
+  position: absolute;top: 0;left: 0;width: 100%;z-index: 100;visibility: hidden;opacity: 0;
+  h3, p{padding: 20px 35px;}
+  h3{
+    @include transition(all 0.3s);
+    font-size: 55px; line-height: 1; font-weight: 900;color: #fcf8f1; text-shadow: 3px 3px 0px #390510, 6px 6px 0px #f57e3c, 9px 9px 0px #c11a2b;
+    &:hover{
+      text-shadow: 5px 5px 0px #390510, 7px 7px 0px #f57e3c, 12px 12px 0px #c11a2b; margin-top: 5px;
+    }
+  }
+  p{
+    line-height: 2;  width: 50%; background: linear-gradient(170deg, #fcf8f1 30%, #fcb95e 80%, #f57e3c 100%); border-radius: 0 30px 0 30px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);}
+  &.on{
+    margin-top: 0; opacity: 1;
+  }
+}
+.newsletter{
+  @include flex;
+  @include flex-direction;
+  @include align-items;
+  color: #222; position: relative;
+  .news_txt{
+    @include flex;
+    @include align-items;
+    @include justify-content;
+    width: 100%; padding-bottom: 40px;
+    h3, p{padding: 20px 35px;}
+    h3{
+      @include transition(all 0.3s);
+      font-size: 55px; line-height: 1; font-weight: 900; color: #ffdeaf; text-shadow: 4px 4px 0px #390510, 7px 7px 0px #f57e3c, 10px 10px 0px #fcf8f1, 12px 12px 0px #ffaa9b;
+    &:hover{
+      text-shadow: 6px 6px 0px #390510, 9px 9px 0px #f57e3c, 12px 12px 0px #fcf8f1, 15px 15px 0px #ffaa9b; margin-top: 5px;
+    }
+    }
+    p{line-height: 2; background: linear-gradient(220deg, #f57e3c 5%, #fcb95e 30%, #fcf8f1 100%); border-radius: 30px 0 30px 0;}
+  }
+  .brand_hover_txt{
+    position: absolute; bottom: 400px; right: 80px;padding: 10px;
+    svg{position: absolute; top: -10px; left: -150px;
+      circle{fill: #cbd5b2}
+      path{fill: none; stroke: #cbd5b2; stroke-linecap: round; stroke-width: 4px}
+    }
+    strong{font-size: 24px; text-align: right; display: block; padding-bottom: 10px;}
+    p{text-align: right; line-height: 1.5;}
+  }
+}
+
+
+#cnt3{
   height: 100vh;
 }
+
