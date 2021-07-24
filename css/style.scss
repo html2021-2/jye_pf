@@ -236,7 +236,7 @@ body.overflowX{overflow-X: hidden;}
 #cnt2{
   background: linear-gradient(#333 10%, #888 20%, #fcf8f1 30%, #fcb95e 50%, #f57e3c 100%);
   .sticky_wrap{
-    height: calc(6300px + 100vh + 200px);
+    height: calc(3012px + 100vw);   //100vw + 3012
     position: relative;
   }
   .intro_sulwhasoo{
@@ -244,8 +244,8 @@ body.overflowX{overflow-X: hidden;}
     @include justify-content(space-around);
     @include align-items;
     @include transition(all 0.8s);
-    height: 100vh; //position: relative;
-    position: sticky; top: 0; overflow: hidden;
+    height: 100vh; // position: relative;
+    position: sticky; top: 0; overflow: hidden; border: 1px solid yellow;
     .txt_sulwhasoo{
       strong{
         color: #fcb95e;
@@ -256,9 +256,12 @@ body.overflowX{overflow-X: hidden;}
       p{padding-top: 20px; color: #fff; line-height: 1.7; font-size: 18px;}
     }
     .computer{
-      // @include transform(scale(0.65));
-      // position: relative; width: 1000px; height: 826px;
-      position: relative; width: 1000px; height: 536px; flex: 0 0 auto;padding: 0 175px;
+      @include transform(scale(0.65));
+      position: relative; width: 1000px; height: 826px;
+
+      // 혹시 모니터 크기가 커지면서 가운데로 위치하는데 영향을 미치나 해서??
+      flex: 0 0 auto;
+
       .sulwhasoo_cnt{position: absolute; top: 37px; left: 41px;}
     }
     &.on{
@@ -267,22 +270,20 @@ body.overflowX{overflow-X: hidden;}
 
   }
   .monitor{
-    position: absolute; top: 37px; left: 175px; width: 650px; height: 536px;z-index: 10;
-    > img{width: 650px;}
+    position: absolute; top: 37px; left: 0; width: 1000px; height: 579px;z-index: 10;  //left: 41px;
   }
-  .monitor_wrap{position: absolute; top: 25px; left: 27px; width: 596px; height: 328px; overflow: hidden;}
-  .up_img{
-    @include transform(scale(0.31));
-    transform-origin: left top; max-width: none;
-    position: relative;
-  }
+  .monitor_wrap{position: absolute; top: 37px; left: 41px; width: 917px; height: 507px; overflow: hidden;}
+  .up_img{position: absolute;top:0; left:0; z-index: -1;}
 }
 .brand_txt{
   @include flex;
   @include align-items(flex-start);
   @include justify-content;
   height: 100vh; color: #222; width: 100%; padding-top: 50px;
+
+  // 추가
   position: absolute;top: 0;left: 0;width: 100%;z-index: 100;visibility: hidden;opacity: 0;
+
   h3, p{padding: 20px 35px;}
   h3{
     @include transition(all 0.3s);

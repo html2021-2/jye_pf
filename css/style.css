@@ -436,7 +436,7 @@ body.overflowX {
 #cnt2 {
   background: linear-gradient(#333 10%, #888 20%, #fcf8f1 30%, #fcb95e 50%, #f57e3c 100%); }
   #cnt2 .sticky_wrap {
-    height: calc(6300px + 100vh + 200px);
+    height: calc(3012px + 100vw);
     position: relative; }
   #cnt2 .intro_sulwhasoo {
     display: -webkit-box;
@@ -455,7 +455,8 @@ body.overflowX {
     height: 100vh;
     position: sticky;
     top: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    border: 1px solid yellow; }
     #cnt2 .intro_sulwhasoo .txt_sulwhasoo strong {
       color: #fcb95e; }
     #cnt2 .intro_sulwhasoo .txt_sulwhasoo h2 {
@@ -472,11 +473,13 @@ body.overflowX {
       line-height: 1.7;
       font-size: 18px; }
     #cnt2 .intro_sulwhasoo .computer {
+      -webkit-transform: scale(0.65);
+      -moz-transform: scale(0.65);
+      transform: scale(0.65);
       position: relative;
       width: 1000px;
-      height: 536px;
-      flex: 0 0 auto;
-      padding: 0 175px; }
+      height: 826px;
+      flex: 0 0 auto; }
       #cnt2 .intro_sulwhasoo .computer .sulwhasoo_cnt {
         position: absolute;
         top: 37px;
@@ -487,26 +490,22 @@ body.overflowX {
   #cnt2 .monitor {
     position: absolute;
     top: 37px;
-    left: 175px;
-    width: 650px;
-    height: 536px;
+    left: 0;
+    width: 1000px;
+    height: 579px;
     z-index: 10; }
-    #cnt2 .monitor > img {
-      width: 650px; }
   #cnt2 .monitor_wrap {
     position: absolute;
-    top: 25px;
-    left: 27px;
-    width: 596px;
-    height: 328px;
+    top: 37px;
+    left: 41px;
+    width: 917px;
+    height: 507px;
     overflow: hidden; }
   #cnt2 .up_img {
-    -webkit-transform: scale(0.31);
-    -moz-transform: scale(0.31);
-    transform: scale(0.31);
-    transform-origin: left top;
-    max-width: none;
-    position: relative; }
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; }
 
 .brand_txt {
   display: -webkit-box;

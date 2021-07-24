@@ -161,90 +161,66 @@ $(document).ready(function () {
   //     }
   // });
 
-
   // intro_sulwhasoo
   const stickyWrapY = $('.sticky_wrap').offset().top;
-  const upImgX = $('.up_img').offset().left;
-  const upImgY = $('.up_img').offset().top - stickyWrapY; //부모요소에서 떨어진 거리
-  $(window).on('scroll', function(){
+  const computerX = $('.computer').offset().left;
+  const computerY = $('.computer').offset().top - stickyWrapY;
+  const lastScale = 0.65;           //초기 .computer의 transform : scale
+  // console.log(stickyWrapY, computerX, computerY, $('.bg_sulwhasoo').offset().top);
+  // 947    969.234375    205.050048828125      5879
+
+  
+  $(window).on('scroll', function () {
     const scrollY = $(this).scrollTop();
     const move = scrollY - stickyWrapY;
     const winWid = $(this).width();
     const winHei = $(this).height();
-    // console.log(scrollY, stickyWrapY, upImgX, upImgY);
-    //                      937        1012.4718627929688    262.5
+    let leftPos;
+    // console.log(scrollY, move, winWid, winHei);
+    // 957  10    1903    947
+    
+    $('.sticky_wrap').css({height: winWid + $('.up_img').height() + (winHei -$('.monitor_wrap').height())});  //5422px;
 
-    const lastScale = 0.31;           //초기 이미지 scale
-    const lastImg = 1920 * lastScale; //초기 이미지 px
-
-    // 모니터 프레임 
-    if (scrollY < stickyWrapY+200) {
-      $('.monitor_wrap').css({overflow: 'hidden'});
-      gsap.to('.monitor>img', {opacity: 1, duration: 0.5, ease: Power3.easeOut});
-    } else {
-      $('.monitor_wrap').css({overflow: 'visible'});
-      gsap.to('.monitor>img', {opacity: 0, duration: 0.5, ease: Power3.easeOut});
-    }
-
+    // fixed로 고정시(sticky가 적용되는 동안 .intro_sulwhasoo.fix 라는 클래스명이 추가됨) => 필요없으면 제거하기
     if (scrollY >= stickyWrapY && scrollY < $('.bg_sulwhasoo').offset().top) {
       $('.intro_sulwhasoo').addClass('fix');
-
-      // 브라우저 높이 만큼 스크롤이 움직이는 동안 .up_img의 크기는 커진다 scale(0.48) => scale(1)
-      if (scrollY > stickyWrapY+200 && scrollY < stickyWrapY+winHei+200) {
-
-        const lager = (1 - lastScale)*(winWid);  // (1-0.31) = 0.69 * 1920 = 1313이 더 커져야 한다
-        const ratio =  move * (1-lastScale) * 0.001 + lastScale;
-        /* ratio의 scale
-          스크롤:늘어나는 비율 + 고정비율(최초)
-          1200 0 + 0.31
-          1300 0.069 + 0.31 = 0.379
-          1400 0.138 + 0.31 = 0.448
-          1500 0.207 + 0.31 = 0.517
-          1600 0.276 + 0.31 = 0.586
-          1700 0.345 + 0.31 = 0.655
-          1800 0.414 + 0.31 = 0.724
-          1900 0.483 + 0.31 = 0.793
-          2000 0.552 + 0.31 = 0.862
-          2100 0.621 + 0.31 = 0.931
-          2200 0.69 + 0.31 = 1
-          스크롤이 실제 움직일 거리의 1/100 움직일때 : scroll X 0.69 X 0.001 = 0.69(가장 커졌을때)
-          수식 : scroll X 0.69 X 0.001 + 0.31
-
-          left(-1013), top(-263)좌표값
-          스크롤: 
-          1200  0
-          1201 1013 * 0.001 = 1.013 (1%)
-          1300 1013 * 0.1 = 101.3
-          1400 1013 * 0.2 = 202.6
-          1500 1013 * 0.3 = 303.9
-          1600 1013 * 0.4 = 405.2
-          1700 1013 * 0.5 = 506.5 (50%)
-          1800 1013 * 0.6 = 607.8
-          1900 1013 * 0.7 = 709.1
-          2000 1013 * 0.8 = 810.4
-          2100 1013 * 0.9 = 911.7
-          2200 1013 * 1.0 = 1,013 (100%)
-
-        */
-          const posX = upImgX/winHei*move;
-          const posY = upImgY/winHei*move;
-        // console.log(`scale: ${ratio}, 커질크기: ${lager}, 스크롤: ${scrollY}, x좌표: ${posX}, y좌표: ${posY}`);
-        if (ratio <= 1) {
-          gsap.to('.up_img', {scale: ratio, left: -posY, top: -posX, duration: 0.5, ease: Power3.easeOut});
-          gsap.to('.brand_txt', {visibility: 'hidden', opacity: 0, duration: 0.5, ease: Power3.easeOut});
-        }
-      } else if (scrollY >= stickyWrapY+winHei+200 && scrollY < stickyWrapY+winHei+400) {
-        gsap.to('.up_img', {scale: 1, left: -upImgX, top: -upImgY, duration: 0.5, ease: Power3.easeOut});
-        gsap.to('.brand_txt', {visibility: 'hidden', opacity: 0, duration: 0.5, ease: Power3.easeOut});
-      } else if (scrollY >= stickyWrapY+winHei+400) {
-        gsap.to('.up_img', {scale: 1, left: -upImgX, top: -upImgY-move+(winHei+400), duration: 0.5, ease: Power3.easeOut});
-        gsap.to('.brand_txt', {visibility: 'visible', opacity: 1, duration: 0.5, ease: Power3.easeOut});
-      }
-    }
-    else {
+    } else {
       $('.intro_sulwhasoo').removeClass('fix');
     }
 
+    // 모니터 프레임
+    if (scrollY < stickyWrapY) { //스티키 상단영역
+      // console.log('1) 스티키 상단영역');
 
+      gsap.to('.computer', {scale: 0.65, left: 0, duration: 0.5, ease: Power3.easeOut});
+      gsap.to('.up_img', {top: 0, duration: 0.5, ease: Power3.easeOut});
+    } else if (scrollY < stickyWrapY + winWid) { //스티키 영역진입 부터 1920(브라우저 가로)픽셀 까지만 - .computer 크기 0.65에서 1로 확대하기
+      // console.log('2) 스티키 영역진입 부터 1920(브라우저 가로)픽셀 까지만');
+
+      const ratio =  ((1-lastScale) / winWid ) * move + lastScale;
+      // const ratio =  ((1-0.65) / 1903 ) * move + 0.65;
+      // .computer를 가운데 위치 시키기 위한 변수: 175는 .computer가 scale 0.65일 경우 650픽셀에서 1이 되었을 경우 1000 => 1000-650 / 2 = 175
+      leftPos = ((computerX-175) - ((winWid - $('.computer').width()) / 2)) * move / winWid;
+      // console.log(ratio, leftPos);
+
+      gsap.to('.computer', {scale: ratio, left: -leftPos, duration: 0.5, ease: Power3.easeOut});
+      // gsap.to('.computer', {scale: ratio, left: -move*0.2, duration: 0.5, ease: Power3.easeOut});
+      gsap.to('.up_img', {top: 0, duration: 0.5, ease: Power3.easeOut});
+    } else if (scrollY < $('.bg_sulwhasoo').offset().top) { //스티키  영역
+      console.log('3) 스티키  영역');
+
+      gsap.to('.computer', {scale: 1, left: -leftPos, duration: 0.5, ease: Power3.easeOut});
+
+      if (scrollY < stickyWrapY + winWid + $('.up_img').height() - $('.monitor_wrap').height()) {  
+        //947(sticky_wrap의시작위치)+1903(winWid)+3012(.up_img높이)-517(.monitor_wrap높이)=5355
+        gsap.to('.up_img', {top: -(move-winWid), duration: 0.5, ease: Power3.easeOut});
+      }
+    } else {  //스티키 하단 영역
+      // console.log('4) 스티키 하단 영역');
+
+      gsap.to('.computer', {scale: 1, left: -leftPos, duration: 0.5, ease: Power3.easeOut});
+      gsap.to('.up_img', {top: -2506, duration: 0.5, ease: Power3.easeOut});
+    }
   });
+  $(window).trigger('scroll');
 });
