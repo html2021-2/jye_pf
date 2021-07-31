@@ -44,6 +44,12 @@
   -o-transition: $value;
   transition: $value;
 }
+@mixin transition-delay($value...) {
+  -webkit-transition-delay: $value;
+  -moz-transition-delay: $value;
+  -o-transition-delay: $value;
+  transition-delay: $value;
+}
 @mixin transform($value...) {
   -webkit-transform: $value;
   -moz-transform: $value;
